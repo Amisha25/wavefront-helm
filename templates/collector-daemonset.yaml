@@ -1,19 +1,25 @@
+{{- if .Values.daemonset.enabled }}
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-  name: wavefront-collector
-  namespace: wavefront-collector
+  name: {{ template "wavefront.collector.fullname" . }}
+  namespace: wavefront
   labels:
-    k8s-app: wavefront-collector
-    name: wavefront-collector
+    app.kubernetes.io/name : {{ template "wavefront.fullname" . }}
+    helm.sh/chart: {{ template "wavefront.chart" . }}
+    app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+    app.kubernetes.io.instance: {{ .Release.Name | quote }}
+    app.kubernetes.io/component: collector
 spec:
   selector:
     matchLabels:
-      k8s-app: wavefront-collector
+      app.kubernetes.io/name : {{ template "wavefront.fullname" .}}
+      app.kubernetes.io/component: collector
   template:
     metadata:
       labels:
-        k8s-app: wavefront-collector
+        app.kubernetes.io/name : {{ template "wavefront.fullname" .}}
+        app.kubernetes.io/component: collector
     spec:
       tolerations:
       - effect: NoSchedule
@@ -23,12 +29,11 @@ spec:
         key: node-role.kubernetes.io/master
         operator: Exists
 
-      serviceAccountName: wavefront-collector
-
+      serviceAccountName: {{ template "wavefront.collector.serviceAccountName" . }}
       containers:
       - name: wavefront-collector
-        image: wavefronthq/wavefront-kubernetes-collector:0.9.8
-        imagePullPolicy: IfNotPresent
+        image: {{ .Values.collector.image.repository }}:{{ .Values.collector.image.tag }}
+        imagePullPolicy: {{ .Values.collector.image.pullPolicy }}
         command:
         - /wavefront-collector
         - --daemon=true
