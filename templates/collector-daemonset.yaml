@@ -1,24 +1,19 @@
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-  name: {{ template "wavefront.collector.fullname" . }}
-  namespace: wavefront
+  name: wavefront-collector
+  namespace: wavefront-collector
   labels:
-    app.kubernetes.io/name : {{ template "wavefront.fullname" . }}
-    helm.sh/chart: {{ template "wavefront.chart" . }}
-    app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
-    app.kubernetes.io.instance: {{ .Release.Name | quote }}
-    app.kubernetes.io/component: collector
+    k8s-app: wavefront-collector
+    name: wavefront-collector
 spec:
   selector:
     matchLabels:
-      app.kubernetes.io/name : {{ template "wavefront.fullname" .}}
-      app.kubernetes.io/component: collector
+      k8s-app: wavefront-collector
   template:
     metadata:
       labels:
-        app.kubernetes.io/name : {{ template "wavefront.fullname" .}}
-        app.kubernetes.io/component: collector
+        k8s-app: wavefront-collector
     spec:
       tolerations:
       - effect: NoSchedule
@@ -28,17 +23,18 @@ spec:
         key: node-role.kubernetes.io/master
         operator: Exists
 
-      serviceAccountName: {{ template "wavefront.collector.serviceAccountName" . }}
+      serviceAccountName: wavefront-collector
+
       containers:
       - name: wavefront-collector
-        image: {{ .Values.collector.image.repository }}:{{ .Values.collector.image.tag }}
-        imagePullPolicy: {{ .Values.collector.image.pullPolicy }}
+        image: wavefronthq/wavefront-kubernetes-collector:0.9.8
+        imagePullPolicy: IfNotPresent
         command:
         - /wavefront-collector
         - --daemon=true
         - --source=kubernetes.summary_api:https://kubernetes.default.svc?useServiceAccount=true&kubeletHttps=true&kubeletPort=10250&insecure=true
         - --source=telegraf:''
-        - --sink=wavefront:?proxyAddress=wavefront-proxy.default.svc.cluster.local:2878&clusterName=k8s-trial&includeLabels=true
+        - --sink=wavefront:?proxyAddress=wavefront-proxy.default.svc.cluster.local:2878&clusterName=k8s-cluster&includeLabels=true
         - --v=2
         volumeMounts:
         - name: procfs
