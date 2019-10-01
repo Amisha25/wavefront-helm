@@ -65,3 +65,4 @@ spec:
       - name: procfs
         hostPath:
           path: /proc
+{{- end }}
