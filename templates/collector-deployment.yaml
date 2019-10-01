@@ -1,6 +1,6 @@
 {{- if .Values.collector.enabled }}
 apiVersion: apps/v1
-kind: Deployment
+kind: DaemonSet
 metadata:
   labels:
     app.kubernetes.io/name : {{ template "wavefront.fullname" . }}
@@ -28,6 +28,7 @@ spec:
         imagePullPolicy: {{ .Values.collector.image.pullPolicy }}
         command:
         - /wavefront-collector
+        - --daemon=true
         - --source={{ .Values.collector.kubernetesSource | default "kubernetes.summary_api:''" }}
         {{- if and (.Values.kubeStateMetrics.enabled) (not .Values.collector.discovery.enabled) }}
         - --source=prometheus:''?url=http://{{ .Release.Name }}-kube-state-metrics:{{ index .Values "kube-state-metrics" "service" "port" }}/metrics
