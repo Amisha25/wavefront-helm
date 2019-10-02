@@ -103,16 +103,16 @@ collector:
 ## and enhance your metric names, and tags. Should network connectivity fall between the proxy and
 ## Wavefront SaaS service, the proxy will buffer metrics, which will be flushed when connectivity resumes.
 ## Ref: https://docs.wavefront.com/proxies.html
-proxy:
-  enabled: true
-  image:
-    repository: wavefronthq/proxy
-    tag: 4.35
-    pullPolicy: IfNotPresent
+# proxy:
+#   enabled: true
+#   image:
+#     repository: wavefronthq/proxy
+#     tag: 4.35
+#     pullPolicy: IfNotPresent
 
-  ## The port number the proxy will listen on for metrics in Wavefront data format.
-  ## This is usually 2878
-  port: 2878
+#   ## The port number the proxy will listen on for metrics in Wavefront data format.
+#   ## This is usually 2878
+#   port: 2878
 
   ## The port nubmer the proxy will listen on for tracing spans in Wavefront trace data format.
   ## This is usually 30000
@@ -149,12 +149,12 @@ proxy:
   ## through the proxy. You can configure the rules here. By default a rule to drop Kubernetes
   ## generated labels is applied to remove unecessary and often noisy tags.
   ## Ref: https://docs.wavefront.com/proxies_preprocessor_rules.html
-  preprocessor:
-    rules.yaml: |
-      '2878':
-        - rule    : drop-generated-label-tags
-          action  : dropTag
-          tag     : label\.(controller-revision-hash|pod-template-.*|.*kubernetes\.io.*)
+  # preprocessor:
+  #   rules.yaml: |
+  #     '2878':
+  #       - rule    : drop-generated-label-tags
+  #         action  : dropTag
+  #         tag     : label\.(controller-revision-hash|pod-template-.*|.*kubernetes\.io.*)
   #       - rule    : add-cluster-tag
   #         action  : addTag
   #         tag     : cluster
