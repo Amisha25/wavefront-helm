@@ -32,8 +32,10 @@ spec:
         command:
         - /wavefront-collector
         - --daemon=true
+        - --source=systemd:''?prefix=kubernetes.systemd.&restartMetrics=true&unitWhitelist=*docker*&unitWhitelist=*kubelet*
         - --source=kubernetes.summary_api:https://kubernetes.default.svc?useServiceAccount=true&kubeletHttps=true&kubeletPort=10250&insecure=true
-        - --sink=wavefront:?proxyAddress={{ template "wavefront.proxy.fullname" . }}:2878{{ template "wavefront.collector.sinkOptions" . }}   
+        - --sink=wavefront:?server={{ .Values.wavefront.url }}&token={{ .Values.wavefront.token }}{{ template "wavefront.collector.sinkOptions" . }}
+#        - --sink=wavefront:?proxyAddress={{ template "wavefront.proxy.fullname" . }}:2878{{ template "wavefront.collector.sinkOptions" . }}   
         - --v=2
         volumeMounts:
         - name: procfs
