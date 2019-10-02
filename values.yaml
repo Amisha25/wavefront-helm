@@ -44,7 +44,7 @@ collector:
 
   ## If set to true, all container metrics will be sent to Wavefront.
   ## When set to false, container level metrics are skipped (pod level and above are still sent to Wavefront). Defaults to true.
-  # includeContainers: true
+  includeContainers: true
 
   ## The global prefix to be added for Kubernetes metrics. Defaults to `kubernetes.`.
   ## This does not apply to other sources. Use source level prefixes for sources other than the Kubernetes source.
@@ -112,7 +112,7 @@ proxy:
 
 #   ## The port number the proxy will listen on for metrics in Wavefront data format.
 #   ## This is usually 2878
-#   port: 2878
+  port: 2878
 
   ## The port nubmer the proxy will listen on for tracing spans in Wavefront trace data format.
   ## This is usually 30000
