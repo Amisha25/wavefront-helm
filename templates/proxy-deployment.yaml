@@ -23,8 +23,8 @@ spec:
     spec:
       containers:
       - name: wavefront-proxy
-        image: {{ .Values.proxy.image.repository }}:{{ .Values.proxy.image.tag }}
-        imagePullPolicy: {{ .Values.proxy.image.pullPolicy }}
+        image:  wavefronthq/proxy:latest
+        imagePullPolicy: IfNotPresent
         env:
         - name: WAVEFRONT_URL
           value: {{ .Values.wavefront.url }}/api

@@ -105,10 +105,10 @@ collector:
 ## Ref: https://docs.wavefront.com/proxies.html
 proxy:
   enabled: true
-  image:
-    repository: wavefronthq/proxy
-    tag: 5.0
-    pullPolicy: IfNotPresent
+  # image:
+  #   repository: wavefronthq/proxy
+  #   tag: 5.0
+  #   pullPolicy: IfNotPresent
 
 #   ## The port number the proxy will listen on for metrics in Wavefront data format.
 #   ## This is usually 2878
