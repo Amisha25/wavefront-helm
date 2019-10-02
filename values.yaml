@@ -174,13 +174,9 @@ serviceAccount:
   ## If not set and create is true, a name is generated using the fullname template
   name:
 
-
-## kube-state-metrics are used to get metrics about the state of the Kubernetes scheduler
-## If enabled the kube-state-metrics chart will be installed as a subchart and the collector
-## will be configured to capture metrics.
-kubeStateMetrics:
-  enabled: true
-
+# kubeStateMetricsUrl - if provided, the discovery process for kube-state-metrics endpoint won't be triggered
+# Only HTTP is accepted. This is an example value: http://172.17.0.3:8080
+# kubeStateMetricsUrl:
 
 ## Openshift integration can be enabled here
 ## If enabled is true, you must specify `collector.kubernetesSource` to be a valid

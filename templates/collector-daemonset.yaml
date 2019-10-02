@@ -29,6 +29,15 @@ spec:
       - name: wavefront-collector
         image: wavefronthq/wavefront-kubernetes-collector:0.9.8
         imagePullPolicy: IfNotPresent
+        env:
+            {{- if .Values.kubeStateMetricsUrl }}
+          - name: "KUBE_STATE_METRICS_URL"
+            value: "{{ .Values.kubeStateMetricsUrl }}"
+            {{- end }}
+            {{- if .Values.kubeStateMetricsTimeout }}
+          - name: TIMEOUT
+            value: {{ .Values.kubeStateMetricsTimeout | quote }}
+            {{- end }}
         command:
         - /wavefront-collector
         - --daemon=true
