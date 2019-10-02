@@ -26,7 +26,7 @@ collector:
   ## If set to true, metrics will be sent to Wavefront via a Wavefront Proxy.
   ## When true you must either specify a value for `collector.proxyAddress` or set `proxy.enabled` to true
   ## If set to false, metrics will be sent to Wavefront via the Direct Ingestion API
-  useProxy: false
+  useProxy: true
 
   ## Can be used to specify a specific address for the Wavefront Proxy
   ## The proxy can be anywhere network reachable including outside of the cluster
@@ -103,12 +103,12 @@ collector:
 ## and enhance your metric names, and tags. Should network connectivity fall between the proxy and
 ## Wavefront SaaS service, the proxy will buffer metrics, which will be flushed when connectivity resumes.
 ## Ref: https://docs.wavefront.com/proxies.html
-# proxy:
-#   enabled: true
-#   image:
-#     repository: wavefronthq/proxy
-#     tag: 4.35
-#     pullPolicy: IfNotPresent
+proxy:
+  enabled: true
+  image:
+    repository: wavefronthq/proxy
+    tag: 4.35
+    pullPolicy: IfNotPresent
 
 #   ## The port number the proxy will listen on for metrics in Wavefront data format.
 #   ## This is usually 2878
